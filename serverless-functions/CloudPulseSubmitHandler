@@ -1,0 +1,76 @@
+import json
+import boto3
+import uuid
+from datetime import datetime
+
+# DynamoDB setup
+dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+table = dynamodb.Table('CloudPulseLeads')  # make sure this matches your table name
+
+# SES setup
+ses = boto3.client('ses', region_name='us-east-1')
+
+RECEIVER = "<receiver_email>"
+SENDER = "<sender_email>"
+
+def lambda_handler(event, context):
+    print("Received event:", event)
+
+    # Get form data
+    name = event.get('name', '')
+    email = event.get('email', '')
+
+    # Generate unique id
+    record_id = str(uuid.uuid4())
+
+    # Timestamp
+    created_at = datetime.utcnow().isoformat() + "Z"
+
+    # Insert into DynamoDB
+    table.put_item(
+        Item={
+            "id": record_id,
+            "name": name,
+            "email": email,
+            "created_at": created_at
+        }
+    )
+
+    # Send email
+    params = {
+        "Destination": {
+            "ToAddresses": [RECEIVER]
+        },
+        "Message": {
+            "Body": {
+                "Text": {
+                    "Data": f"""
+🚀 CloudPulse Serverless - New Workflow Triggered
+
+A new user has interacted with your serverless application.
+
+📌 User Details:
+Name  : {name}
+Email : {email}
+""",
+                    "Charset": "UTF-8"
+                }
+            },
+            "Subject": {
+                "Data": f"CloudPulse Alert: New Workflow Triggered by {name}",
+                "Charset": "UTF-8"
+            }
+        },
+        "Source": SENDER
+    }
+
+    ses.send_email(**params)
+
+    return {
+        "statusCode": 200,
+        "headers": {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+        },
+        "body": json.dumps({"result": "Success"})
+    }
