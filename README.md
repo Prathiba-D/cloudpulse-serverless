@@ -1,7 +1,7 @@
 <h3>🚀 CloudPulse Serverless</h3>
 <p>⚡ A real-time, event-driven serverless web application built on AWS demonstrating scalable cloud architecture with automated backend workflows.</p>
 <h3>📌 Overview</h3>
-<p>CloudPulse Serverless is a fully serverless web application designed to demonstrate real-world cloud architecture using AWS services.It simulates a real-time user interaction system where form submissions trigger backend workflows including data persistence and email notifications.This project highlights event-driven architecture, backend automation, and cloud-native design principles.</p>
+<p>CloudPulse Serverless is a fully serverless web application designed to demonstrate real-world cloud architecture using AWS services. It simulates a real-time user interaction system where form submissions trigger backend workflows including data persistence and email notifications.This project highlights event-driven architecture, backend automation, and cloud-native design principles.</p>
 <p><b>Architecture Summary:</b> CloudFront → S3 → API Gateway → Lambda → DynamoDB → SES</p>
 <h3>🚀 Features</h3>
 <ul>
