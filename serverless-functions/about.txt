@@ -1,0 +1,8 @@
+This project uses two AWS Lambda functions to handle backend processing in a serverless architecture.
+1. Submit Handler Lambda:
+Triggered via API Gateway (POST /submissions), this function processes user input from the frontend form, generates a unique identifier and timestamp, stores the 
+data in DynamoDB, and sends a real-time email notification using Amazon SES.
+
+2. Get Leads Handler Lambda:
+Triggered via API Gateway (GET /leads), this function retrieves stored user data from DynamoDB and returns it to the frontend, enabling the display of submissions
+in a structured dashboard view.
